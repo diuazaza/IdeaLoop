@@ -7,6 +7,7 @@ This directory contains the database migration and schema setup scripts for Idea
 - `modules/02_projects_media.sql` - Member 2 (Projects, Media, Tags)
 - `modules/03_engagement.sql` - Member 3 (Likes, Comments, Saved Projects)
 - `modules/04_requests.sql` - Member 4 & 5 (Learn Requests, Collaboration Requests)
+- `modules/05_user_identity.sql` - Case-insensitive account identity indexes (migration 005 equivalent)
 
 ## How to Run Locally
 
