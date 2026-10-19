@@ -4,6 +4,7 @@ import type { Kysely } from 'kysely';
 import type { Database } from '../db/types.js';
 import { createUserController } from '../controllers/userController.js';
 import { requireAuth } from '../middleware/authMiddleware.js';
+import { createUserSkillController } from '../controllers/userSkillController.js';
 
 export function createUserRoutes(db: Kysely<Database>, secret: string) {
   const users = Router();
@@ -26,5 +27,8 @@ export function createUserRoutes(db: Kysely<Database>, secret: string) {
   users.get('/:id', controller.get);
   users.patch('/:id', mutationLimit, authenticate, controller.update);
   users.delete('/:id', mutationLimit, authenticate, controller.remove);
+  const skills = createUserSkillController(db);
+  users.get('/:id/skills', skills.list);
+  users.put('/:id/skills', mutationLimit, authenticate, skills.replace);
   return { users, auth };
 }
