@@ -15,6 +15,8 @@ test('environment validates required values and applies defaults', () => {
   }
   assert.throws(() => parseEnvironment({ DATABASE_URL: 'https://localhost/db' }), /DATABASE_URL/);
   assert.throws(() => parseEnvironment({ DATABASE_URL: databaseUrl, NODE_ENV: 'invalid' }), /NODE_ENV/);
+  assert.throws(() => parseEnvironment({ DATABASE_URL: databaseUrl, JWT_SECRET: 'short' }), /JWT_SECRET/);
+  assert.equal(parseEnvironment({ DATABASE_URL: databaseUrl, JWT_SECRET: 'x'.repeat(32) }).jwtSecret, 'x'.repeat(32));
 });
 
 test('HTTP health, readiness, unknown routes, and malformed input', async () => {
