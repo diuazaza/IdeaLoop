@@ -2,11 +2,14 @@
   "name": "idealoop",
   "version": "1.0.0",
   "description": "IdeaLoop is a web-based platform for creative individuals to share and discover projects across multiple media (coding, 3D modeling, digital art, writing, music, crafts), request skill mentorship, and find project collaborators.",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tsx --test src/tests/*.test.ts",
     "db:migrate": "tsx src/db/migrate.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -35,5 +38,8 @@
   },
   "allowScripts": {
     "esbuild@0.28.2": true
+  },
+  "engines": {
+    "node": ">=22"
   }
 }
