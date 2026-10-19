@@ -5,3 +5,4 @@
 \i db/modules/02_projects_media.sql
 \i db/modules/03_engagement.sql
 \i db/modules/04_requests.sql
+\i db/modules/05_user_identity.sql

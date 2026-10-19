@@ -1,18 +1,22 @@
 import 'dotenv/config';
 import { Kysely, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
+import { parseEnvironment } from '../config/env.js';
+import type { Database } from './types.js';
 
-const connectionString = process.env.DATABASE_URL;
-
-if (!connectionString) {
-  throw new Error('DATABASE_URL is missing from your environment');
-}
+const { databaseUrl } = parseEnvironment(process.env);
 
 const pool = new Pool({
-  connectionString,
+  connectionString: databaseUrl,
+  connectionTimeoutMillis: 5000,
+  query_timeout: 5000,
 });
 
-export const db = new Kysely<any>({
+pool.on('error', (error) => {
+  console.error('Idle database connection failed:', error);
+});
+
+export const db = new Kysely<Database>({
   dialect: new PostgresDialect({ pool }),
 });
 

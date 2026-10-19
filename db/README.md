@@ -7,8 +7,12 @@ This directory contains the database migration and schema setup scripts for Idea
 - `modules/02_projects_media.sql` - Member 2 (Projects, Media, Tags)
 - `modules/03_engagement.sql` - Member 3 (Likes, Comments, Saved Projects)
 - `modules/04_requests.sql` - Member 4 & 5 (Learn Requests, Collaboration Requests)
+- `modules/05_user_identity.sql` - Case-insensitive account identity indexes (migration 005 equivalent)
 
 ## How to Run Locally
+
+For the backend, prefer `npm run db:migrate` after configuring `.env`. The following raw SQL steps are an alternative; do not run both against the same database.
+
 1. Ensure PostgreSQL is installed and running.
 2. Create local database: `createdb idealoop_db`
 3. Execute master schema: `psql -d idealoop_db -f db/schema.sql`
@@ -33,7 +37,7 @@ erDiagram
     projects ||--o{ project_media : "contains"
     projects ||--o{ project_tags : "tagged with"
     projects ||--o{ project_skills : "uses"
-    projects ||--o| collaboration_requests : "referenced in"
+    projects |o--o{ collaboration_requests : "referenced in"
 
     tags ||--o{ project_tags : "categorizes"
     skills ||--o{ user_skills : "categorizes user"
@@ -124,8 +128,8 @@ erDiagram
 
     learning_requests {
         int id PK
-        int sender_id FK
-        int receiver_id FK
+        int learner_id FK
+        int creator_id FK
         int skill_id FK
         string message
         string status
@@ -138,6 +142,7 @@ erDiagram
         int sender_id FK
         int receiver_id FK
         int project_id FK
+        int skill_id FK
         string message
         string status
         datetime created_at
